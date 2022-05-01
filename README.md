@@ -25,7 +25,7 @@ Observaciones:
     Envíanos tus respuestas en una repo pública al correo techtalent@houm.com con copia a daniela.bustos@houm.com
 
 # Solución
-![Screenshot](houm_challenge/images/honest_work.png)
+![Screenshot](images/honest_work.png)
 
 Debo aclarar que aunque he intentado tener en cuenta muchos factores que pueden afectar a la calidad de la solución como mantención del sistema, casos de borde, etc, no he incluido la configuración para el sistema en producción ya que dicha configuración implicaría realizar muchas suposiciones 
 
@@ -125,7 +125,7 @@ Para obtener el token se debe realizar una petición POST a ``/api/token/`` con 
 
 
 ### Registro de posición
-![Screenshot](houm_challenge/images/map_position.png)
+![Screenshot](images/map_position.png)
 
 
 El registro de posicion de un houmer se realiza mediante peticiones POST al endpoint ``/api/position/``.
@@ -145,7 +145,7 @@ Dichos campos se validan previamente a la operación de guardado en la base de d
 
 
 ### Presencia en las propiedades
-![Screenshot](houm_challenge/images/ouija.png)
+![Screenshot](images/ouija.png)
 
 
 Los datos de presencia en propiedades para un día y un usuario se recuperan desde el endpoint con query_params ``/api/presence/`` con el método GET.
@@ -182,7 +182,7 @@ Supuestos:
 
 
 ### Monitoreo de límite de velocidad
-![Screenshot](houm_challenge/images/speed_limit.png)
+![Screenshot](images/speed_limit.png)
 
 
 Los datos de los tiempos en que el houmer se desplazó con una velocidad superior a cierto parametro se recuperan desde la ruta con parámetros ``/api/safety/speed/`` y el método GET.
@@ -270,11 +270,11 @@ Migrate para crear la bd y correr management command creado para esta tarea, sit
 
 con un resultado como:
 
-![Screenshot](houm_challenge/images/migrate.png)
+![Screenshot](images/migrate.png)
 
 ``./manage.py populate``
 
-![Screenshot](houm_challenge/images/populate.png)
+![Screenshot](images/populate.png)
 
 
 #### Arrancar worker de celery
@@ -282,7 +282,7 @@ En otro terminal/proceso que debe mantenerse en ejecución para el correcto func
 
 ``celery -A houm_challenge worker -l INFO``
 
-![Screenshot](houm_challenge/images/redis.png)
+![Screenshot](images/redis.png)
 
 
 #### Arrancar el server de desarrollo
@@ -290,7 +290,7 @@ En otro terminal/proceso que debe mantenerse en ejecución para el correcto func
 
 ``./manage.py runserver``
 
-![Screenshot](houm_challenge/images/runserver.png)
+![Screenshot](images/runserver.png)
 
 
 #### Tests
@@ -304,7 +304,7 @@ y con el virtualenv activado:
 
 ``python end_to_end.py``
 
-![Screenshot](houm_challenge/images/end_to_end.png)
+![Screenshot](images/end_to_end.png)
 
 
 #### debugging
