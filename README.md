@@ -278,7 +278,7 @@ con un resultado como:
 
 
 #### Arrancar worker de celery
-En otro terminal/proceso que debe mantenerse en ejecución para el correcto funcionamiento de la aplicación ejecuta:
+En otro terminal/proceso que debe mantenerse en ejecución para el correcto funcionamiento de la aplicación, situandose en la ruta donde se encuentra el fichero manage.py ejecuta:
 
 ``celery -A houm_challenge worker -l INFO``
 
@@ -286,6 +286,7 @@ En otro terminal/proceso que debe mantenerse en ejecución para el correcto func
 
 
 #### Arrancar el server de desarrollo
+En otro terminal/proceso que debe mantenerse en ejecución para el correcto funcionamiento de la aplicación, situandose en la ruta donde se encuentra el fichero manage.py ejecuta:
 
 ``./manage.py runserver``
 
@@ -303,7 +304,7 @@ y con el virtualenv activado:
 
 ``python end_to_end.py``
 
-![Screenshot](houm_challenge/images/redis.png)
+![Screenshot](houm_challenge/images/end_to_end.png)
 
 
 #### debugging
