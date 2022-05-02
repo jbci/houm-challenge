@@ -3,27 +3,30 @@ import time
 import pymongo
 import requests
 
-def get_mongo(kwargs=dict()):
-    host = 'localhost'
-    port = 27017
-    name = 'series_db'
-    collection = 'tracking'
-    mongo_client = pymongo.MongoClient(f"mongodb://{host}:{port}/")
-    nosqldb = mongo_client[name][collection]
-    return nosqldb
+# def get_mongo(kwargs=dict()):
+    # host = 'localhost'
+    # port = 27017
+    # name = 'series_db'
+    # collection = 'tracking'
+    # mongo_client = pymongo.MongoClient(f"mongodb://{host}:{port}/")
+    # nosqldb = mongo_client[name][collection]
+    # return nosqldb
 
 def main():
     print("Starting mock data insertion...")
-    nosqldb = get_mongo()
-    nosqldb.drop()
+    # nosqldb = get_mongo()
+    # nosqldb.drop()
 
     login_response = requests.request(
         method='POST', url='http://localhost:8000/api/token/', data={'username': 'houmer', 'password': 'houmer'})
-    print(login_response.json())
+    # print(login_response.json())
+    if login_response.json()['token']:
+        print("     token test passed")
 
     start_time = datetime(2022, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
     unix_timestamp = datetime.timestamp(start_time)
-    print(f"unix_timestamp: {unix_timestamp} start_time: {start_time}")
+    # print(f"unix_timestamp: {unix_timestamp} start_time: {start_time}")
+    x = dict()
     for i in range(-120, 240, 60):
         current_time = start_time + timedelta(seconds=i)
         unix_timestamp = datetime.timestamp(current_time)
@@ -38,11 +41,14 @@ def main():
         headers = {'Authorization': f'Token {login_response.json()["token"]}'}
         insert_response = requests.request(
             method='POST', url='http://localhost:8000/api/position/', data=insert_dict, headers=headers)
+        # print(insert_response.json())
         x = insert_response.json()['id']
-        print(f"unix_timestamp: {unix_timestamp} start_time: {current_time} x: {x}")
-
-    results = nosqldb.count_documents({})
-    print(f"Number of results: {results}")
+        
+        # print(f"unix_timestamp: {unix_timestamp} start_time: {current_time} x: {x}")
+    if x:
+        print("     insert test passed")
+    # results = nosqldb.count_documents({})
+    # print(f"Number of results: {results}")
 
     # results = nosqldb.find().sort('original_time')
     # for r in results:
@@ -52,30 +58,34 @@ def main():
     headers = {'Authorization': f'Token {login_response.json()["token"]}'}
     get_response = requests.request(
         method='GET', url='http://localhost:8000/api/position/', headers=headers)
-    print(get_response.json())
+    # print(get_response.json())
 
 def check_presence():
     print("checking presence...")
 
     login_response = requests.request(
         method='POST', url='http://localhost:8000/api/token/', data={'username': 'admin', 'password': 'admin'})
-    print(login_response.json())
+    # print(login_response.json())
     headers = {'Authorization': f'Token {login_response.json()["token"]}'}
 
     presence_response = requests.request(
-        method='GET', url='http://localhost:8000/api/presence/?user__id=2&date=2022-01-01', data={'user_id': 2, 'date': '2020-01-01'}, headers=headers)
+        method='GET', url='http://localhost:8000/api/presence/?user__id=2&date=2022-01-01', data={}, headers=headers)
     print(presence_response.json())
+    if presence_response.json()['count'] > 0:
+        print("     presence test passed")
 
 def speed_limit():
     print("speed_limit...")
     login_response = requests.request(
         method='POST', url='http://localhost:8000/api/token/', data={'username': 'admin', 'password': 'admin'})
-    print(login_response.json())
+    # print(login_response.json())
     headers = {'Authorization': f'Token {login_response.json()["token"]}'}
 
     presence_response = requests.request(
         method='GET', url='http://localhost:8000/api/safety/speed/', data={'user_id': 2, 'date': '2022-01-01', 'threshold': 50}, headers=headers)
     print(presence_response.json())
+    if presence_response.json()['count'] > 0:
+        print("     speed limit test passed")
 
 
 

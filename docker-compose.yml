@@ -1,0 +1,54 @@
+version: '3.3'
+
+services:
+  web:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    command: >
+      bash -c "cp houm_challenge/settings/example.env.docker houm_challenge/settings/.env
+      && python manage.py migrate
+      && python manage.py populate
+      && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./houm_challenge/:/usr/src/app/
+    ports:
+      - 8000:8000
+    environment:
+      WAIT_HOSTS: postgis:5432
+    depends_on:
+      - postgis
+      - mongo
+      - redis
+    restart: always
+  mongo:
+    image: mongo:latest
+    command: mongod --storageEngine wiredTiger
+    ports:
+      - "27017:27017"
+    restart: always
+    logging:
+      driver: none
+  celery:
+    build: .
+    command: celery -A houm_challenge worker -l info
+    depends_on:
+      - redis
+      - postgis
+  redis:
+    image: "redis:alpine"
+    logging:
+      driver: none
+  postgis:
+    image: kartoza/postgis
+    command: postgis
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgis/:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=postgis
+      - POSTGRES_PASSWORD=postgis
+    restart: always
+volumes:
+  postgis:

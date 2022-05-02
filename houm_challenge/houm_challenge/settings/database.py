@@ -15,23 +15,48 @@ from pathlib import Path
 # Application definition
 from .installed import INSTALLED_APPS
 from .rest import *
+import environ
 
+# Initialise default environment variables
+env = environ.Env(
+    # set casting, default value
+)
+
+environ.Env.read_env()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.spatialite',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    },
-    'timeseries': {
-        'TYPE': 'mongo',
-        'HOST': 'localhost',
-        'PORT': 27017,
-        'NAME': 'series_db',
-        'COLLECTION': 'tracking',
+if env('DB_HOST') == 'postgis':
+    DATABASES = {
+        'default': {
+            'ENGINE': env('DB_ENGINE'),
+            'NAME': env('DB_NAME'),
+            'USER': env('DB_USER'),
+            'PASSWORD': env('DB_PASSWORD'),
+            'HOST': env('DB_HOST'),
+        },
+        'timeseries': {
+            'TYPE': env('NOSQLDB_TYPE'),
+            'HOST': env('NOSQLDB_HOST'),
+            'PORT': env('NOSQLDB_PORT'),
+            'NAME': env('NOSQLDB_NAME'),
+            'COLLECTION': env('NOSQLDB_COLLECTION'),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': env('DB_ENGINE'),
+            'NAME': BASE_DIR / env('DB_NAME'),
+        },
+        'timeseries': {
+            'TYPE': env('NOSQLDB_TYPE'),
+            'HOST': env('NOSQLDB_HOST'),
+            'PORT': env('NOSQLDB_PORT'),
+            'NAME': env('NOSQLDB_NAME'),
+            'COLLECTION': env('NOSQLDB_COLLECTION'),
+        }
+    }

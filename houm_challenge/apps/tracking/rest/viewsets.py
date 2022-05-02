@@ -15,7 +15,7 @@ class PresenceViewSet(viewsets.ModelViewSet):
     filterset_fields = ['id', 'date', 'user__id']
 
     """
-    Following methos may be used by the user to alter the data in the database.
+    Following methods may be used by the user to alter the data in the database.
     To do so proper permissions must be defined and implemented.
     It is considered beyond the scope of this challenge.
     """

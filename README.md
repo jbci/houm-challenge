@@ -220,6 +220,9 @@ Supuestos:
 
 ## Ejecución de la solución
 
+![Screenshot](images/choose.png)
+
+### Sin docker
 Estas instrucciones son para sistemas operativo debian 11 o similares.
 Se debe contar con un usuario con privilegios de root o de sudo, si sudo esta instalado en el sistema.
 
@@ -233,10 +236,12 @@ situarse en el directorio:
 
 
 #### Requerimientos de sistema
+- gdal
 - [db geoespacial](https://docs.djangoproject.com/en/4.0/ref/contrib/gis/install/geolibs/): para jugar instala spatialite
 - [redis](https://redis.io/)
 - [python3.9](https://wiki.debian.org/Python)
 - [python3.9-venv](https://packages.debian.org/stable/python3-venv)
+- [mongodb]
 
 
 #### Crear y activar virtualenv
@@ -308,7 +313,30 @@ y con el virtualenv activado:
 
 
 #### debugging
-Si algo falla haber elegido correrlo con docker :P
+Si algo falla haber elegido correrlo con docker :P.
 
-- docker
+Debe de tratarse de alguna dependencia del sistema operativo que ya tenía instalada en el momento de empezar el proyecto, precisamente para que no pase eso se hizo docker.
 
+### Con docker
+Para correr la solución con docker necesitarás docker-compose.
+
+Desde un terminal, en la raíz del proyecto:
+
+``cd houm_challenge/settings``
+
+y
+
+``cp example.env.docker .env``
+
+
+Situate otra vez en la raíz del proyecto, y ejecuta:
+
+``docker-compose up`` o tal vez deba ejecutarlo con ``sudo docker-compose up``,
+
+depende de como lo hayas instalado.
+
+Este último comando puede tardar un rato, habrá acabado cuando muestre que está escuchando el puerto 8000:
+![Screenshot](images/docker_server.png)
+
+En este momento puedes abrir otro terminal y ejecutar el script end_to_end.py y deberías ver esto:
+![Screenshot](images/end_to_end.png)
